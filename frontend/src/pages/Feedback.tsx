@@ -1,4 +1,3 @@
-// src/pages/Feedback.tsx
 import React, { useState } from "react";
 
 const Feedback: React.FC = () => {

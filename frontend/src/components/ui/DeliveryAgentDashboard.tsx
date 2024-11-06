@@ -1,7 +1,8 @@
 import React from "react";
 
 const DeliveryAgentDashboard: React.FC = () => {
-  // TODO: Fetch assigned delivery tasks from API
+  // TODO: Fetch assigned delivery tasks from DB? or use dummy data?
+
   const assignedTasks = [
     { id: 1, status: "Pending", pickup: "789 Oak St", dropoff: "101 Pine St" },
     {

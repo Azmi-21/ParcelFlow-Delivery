@@ -1,17 +1,15 @@
 import React from "react";
 import { Truck, Clock, Shield, Phone } from "lucide-react";
-import Footer from "@/components/ui/Footer";
 
+//** TODO: Add needed pictures**
 const HomePage: React.FC = () => {
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Hero Section */}
       <section className="relative h-screen flex items-center justify-center text-white">
         <div
           className="absolute inset-0 bg-cover bg-center z-0"
           style={{
-            backgroundImage:
-              "url('https://source.unsplash.com/random/1600x900?delivery,logistics')",
+            backgroundImage: "url(../assets/pexels-mizunokozuki-13443801.jpg)",
           }}
         ></div>
         <div className="absolute inset-0 bg-black opacity-50 z-10"></div>
@@ -22,9 +20,6 @@ const HomePage: React.FC = () => {
           <p className="text-xl mb-8">
             Your trusted partner for seamless logistics solutions
           </p>
-          <button className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full transition duration-300">
-            Learn More
-          </button>
         </div>
       </section>
 
@@ -170,8 +165,6 @@ const HomePage: React.FC = () => {
           </div>
         </div>
       </section>
-
-      <Footer />
     </div>
   );
 };

@@ -1,6 +1,6 @@
-// src/pages/DeliveryRequest.tsx
 import React, { useState } from "react";
 
+//**TODO: Implement Real logic, for now, everything is random
 const DeliveryRequest: React.FC = () => {
   const [pickupAddress, setPickupAddress] = useState("");
   const [dropoffAddress, setDropoffAddress] = useState("");
@@ -11,7 +11,7 @@ const DeliveryRequest: React.FC = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // TODO: Implement API call to get quotation
+    // TODO: Implement real logic to get quotation
     // For now, we'll just set a random fee
     setEstimatedFee(Math.floor(Math.random() * 50) + 10);
     setShowQuotation(true);

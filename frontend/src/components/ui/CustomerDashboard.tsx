@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 const CustomerDashboard: React.FC = () => {
-  // TODO: Fetch recent orders and trackable deliveries from API
+  // TODO: Fetch recent orders and trackable deliveries from DB? or use dummy data
   const recentOrders = [
     { id: 1, status: "In Transit", destination: "123 Main St" },
     { id: 2, status: "Delivered", destination: "456 Elm St" },

@@ -1,4 +1,3 @@
-// src/pages/Tracking.tsx
 import React, { useState } from "react";
 
 interface Order {
@@ -16,14 +15,14 @@ const Tracking: React.FC = () => {
       status: "In Transit",
       origin: "123 Main St",
       destination: "456 Elm St",
-      estimatedDelivery: "2023-05-15 14:00",
+      estimatedDelivery: "2025-05-15 14:00",
     },
     {
       id: 2,
       status: "Delivered",
       origin: "789 Oak St",
       destination: "101 Pine St",
-      estimatedDelivery: "2023-05-14 10:00",
+      estimatedDelivery: "2025-05-14 10:00",
     },
   ]);
 
@@ -62,7 +61,7 @@ const Tracking: React.FC = () => {
             <p>Origin: {selectedOrder.origin}</p>
             <p>Destination: {selectedOrder.destination}</p>
             <p>Estimated Delivery: {selectedOrder.estimatedDelivery}</p>
-            {/* TODO: Add a map component here to show the delivery route */}
+            {/* TODO: Add a map component here to show the delivery route?? */}
             <div className="mt-4 h-64 bg-gray-200 flex items-center justify-center">
               Map Placeholder
             </div>

@@ -4,7 +4,7 @@ import DeliveryAgentDashboard from "../components/ui/DeliveryAgentDashboard";
 
 const Dashboard: React.FC = () => {
   // TODO: Implement logic to determine user role
-  const userRole = "customer"; // This should be dynamically set based on the logged-in user
+  const userRole = "customer"; // This will be dynamically set based on the logged-in user
 
   return (
     <div>
