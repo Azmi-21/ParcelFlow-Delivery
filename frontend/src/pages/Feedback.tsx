@@ -1,82 +1,72 @@
+// src/pages/Feedback.tsx
 import React, { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import Navigation from "@/components/ui/Navigation";
-import Footer from "@/components/ui/Footer";
-import { Star } from "lucide-react";
 
-export default function FeedbackPage() {
+const Feedback: React.FC = () => {
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState("");
   const [submitted, setSubmitted] = useState(false);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle feedback submission logic here
+    // TODO: Implement feedback submission logic
+    console.log("Feedback submitted:", { rating, comment });
     setSubmitted(true);
   };
 
   return (
-    <div className="min-h-screen flex flex-col">
-      <Navigation />
-      <main className="flex-grow container mx-auto px-4 py-8">
-        <h1 className="text-3xl font-bold mb-6">Review and Feedback</h1>
-        {!submitted ? (
-          <Card className="max-w-md mx-auto">
-            <CardHeader>
-              <CardTitle>Rate Your Delivery Experience</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <form onSubmit={handleSubmit} className="space-y-4">
-                <div>
-                  <Label>Rating</Label>
-                  <div className="flex space-x-1">
-                    {[1, 2, 3, 4, 5].map((star) => (
-                      <Star
-                        key={star}
-                        className={`cursor-pointer ${
-                          star <= rating
-                            ? "text-yellow-400 fill-yellow-400"
-                            : "text-gray-300"
-                        }`}
-                        onClick={() => setRating(star)}
-                      />
-                    ))}
-                  </div>
-                </div>
-                <div>
-                  <Label htmlFor="comment">Comments</Label>
-                  <Textarea
-                    id="comment"
-                    value={comment}
-                    onChange={(e) => setComment(e.target.value)}
-                    placeholder="Share your experience..."
-                  />
-                </div>
-                <Button type="submit" className="w-full">
-                  Submit Feedback
-                </Button>
-              </form>
-            </CardContent>
-          </Card>
-        ) : (
-          <Card className="max-w-md mx-auto">
-            <CardHeader>
-              <CardTitle>Thank You for Your Feedback!</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p>
-                Your feedback has been submitted successfully. We appreciate
-                your input and will use it to improve our services.
-              </p>
-            </CardContent>
-          </Card>
-        )}
-      </main>
-      <Footer />
+    <div className="max-w-md mx-auto">
+      <h1 className="text-2xl font-bold mb-4">Delivery Feedback</h1>
+      {!submitted ? (
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <label className="block mb-1">Rate your experience</label>
+            <div className="flex space-x-2">
+              {[1, 2, 3, 4, 5].map((star) => (
+                <button
+                  key={star}
+                  type="button"
+                  onClick={() => setRating(star)}
+                  className={`text-2xl ${
+                    star <= rating ? "text-yellow-500" : "text-gray-300"
+                  }`}
+                >
+                  ★
+                </button>
+              ))}
+            </div>
+          </div>
+          <div>
+            <label htmlFor="comment" className="block mb-1">
+              Comments
+            </label>
+            <textarea
+              id="comment"
+              value={comment}
+              onChange={(e) => setComment(e.target.value)}
+              className="w-full px-3 py-2 border rounded"
+              rows={4}
+            ></textarea>
+          </div>
+          <button
+            type="submit"
+            className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700"
+          >
+            Submit Feedback
+          </button>
+        </form>
+      ) : (
+        <div
+          className="bg-green-100 border-l-4 border-green-500 text-green-700 p-4"
+          role="alert"
+        >
+          <p className="font-bold">Thank you for your feedback!</p>
+          <p>
+            We appreciate your input and will use it to improve our services.
+          </p>
+        </div>
+      )}
     </div>
   );
-}
+};
+
+export default Feedback;

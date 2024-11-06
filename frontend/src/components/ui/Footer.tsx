@@ -1,7 +1,7 @@
 import React from "react";
-import Link from "next/link";
+import { Link } from "react-router-dom";
 
-export default function Footer() {
+const Footer: React.FC = () => {
   return (
     <footer className="bg-gray-100 text-gray-600 py-8">
       <div className="container mx-auto flex flex-wrap justify-between">
@@ -15,17 +15,17 @@ export default function Footer() {
           <h3 className="text-md font-semibold mb-2">Quick Links</h3>
           <ul className="text-sm">
             <li>
-              <Link href="/about" className="hover:underline">
+              <Link to="/about" className="hover:underline">
                 About Us
               </Link>
             </li>
             <li>
-              <Link href="/contact" className="hover:underline">
+              <Link to="/contact" className="hover:underline">
                 Contact
               </Link>
             </li>
             <li>
-              <Link href="/faq" className="hover:underline">
+              <Link to="/faq" className="hover:underline">
                 FAQ
               </Link>
             </li>
@@ -35,12 +35,12 @@ export default function Footer() {
           <h3 className="text-md font-semibold mb-2">Legal</h3>
           <ul className="text-sm">
             <li>
-              <Link href="/terms" className="hover:underline">
+              <Link to="/terms" className="hover:underline">
                 Terms of Service
               </Link>
             </li>
             <li>
-              <Link href="/privacy" className="hover:underline">
+              <Link to="/privacy" className="hover:underline">
                 Privacy Policy
               </Link>
             </li>
@@ -58,4 +58,6 @@ export default function Footer() {
       </div>
     </footer>
   );
-}
+};
+
+export default Footer;

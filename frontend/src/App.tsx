@@ -1,18 +1,33 @@
+// src/App.tsx
 import React from "react";
-import { BrowserRouter, Router, Routes, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Layout from "./components/ui/Layout";
 import Dashboard from "./pages/Dashboard";
-import LoginPage from "./pages/Login";
-import RegisterPage from "./pages/Register";
-import RequestDeliveryPage from "./pages/Request-delivery";
-import FeedbackPage from "./pages/Feedback";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import DeliveryRequest from "./pages/DeliveryRequest";
+import Tracking from "./pages/Tracking";
+import Payment from "./pages/Payment";
+import Support from "./pages/Support";
+import Feedback from "./pages/Feedback";
+import HomePage from "./pages/HomePage";
 
-const App = () => {
+const App: React.FC = () => {
   return (
-    <BrowserRouter>
+    <Router>
       <Routes>
-        <Route path="/" element={<Dashboard />} />
+        <Route path="/" element={<Layout />}>
+          <Route index element={<HomePage />} />
+          <Route path="login" element={<Login />} />
+          <Route path="register" element={<Register />} />
+          <Route path="request-delivery" element={<DeliveryRequest />} />
+          <Route path="tracking" element={<Tracking />} />
+          <Route path="payment" element={<Payment />} />
+          <Route path="support" element={<Support />} />
+          <Route path="feedback" element={<Feedback />} />
+        </Route>
       </Routes>
-    </BrowserRouter>
+    </Router>
   );
 };
 
