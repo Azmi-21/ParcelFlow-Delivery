@@ -1,18 +1,20 @@
 import React from "react";
-import { BrowserRouter, Router, Routes, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Dashboard from "./pages/Dashboard";
 import LoginPage from "./pages/Login";
 import RegisterPage from "./pages/Register";
 import RequestDeliveryPage from "./pages/Request-delivery";
 import FeedbackPage from "./pages/Feedback";
 
-const App = () => {
+const App: React.FC = () => {
   return (
-    <BrowserRouter>
+    <Router>
       <Routes>
-        <Route path="/" element={<Dashboard />} />
+        <Route path="/" element={<Dashboard />}>
+          <Route index element={<Dashboard />} />
+        </Route>
       </Routes>
-    </BrowserRouter>
+    </Router>
   );
 };
 
