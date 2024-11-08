@@ -1,5 +1,6 @@
 import React from "react";
 import { Truck, Clock, Shield, Phone } from "lucide-react";
+import FeedbackForm from '../components/ui/FeedbackForm.tsx';
 
 //** TODO: Add needed pictures**
 const HomePage: React.FC = () => {
@@ -21,6 +22,12 @@ const HomePage: React.FC = () => {
             Your trusted partner for seamless logistics solutions
           </p>
         </div>
+      </section>
+
+      {/* Feedback Section */}
+      <section>
+        <h2>Give Us Your Feedback</h2>
+        <FeedbackForm />
       </section>
 
       {/* About Us Section */}

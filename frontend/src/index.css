@@ -6,3 +6,17 @@
     --radius: 0.5rem
   }
 }
+
+.feedback-form .star {
+  font-size: 2rem;
+  cursor: pointer;
+  color: gray;
+  border: none;
+  background: none;
+  padding: 0;
+  margin: 0 0.1rem;
+}
+
+.feedback-form .star.selected {
+  color: orange;
+}
