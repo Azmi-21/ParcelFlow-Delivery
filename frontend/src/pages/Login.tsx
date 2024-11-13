@@ -1,15 +1,26 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { userDatabase } from "../assets/userDatabase";
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [role, setRole] = useState("customer");
+  const [error, setError] = useState("");
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // TODO: Implement login logic
-    console.log("Login:", { email, password, role });
+    const user = userDatabase.find(
+      (u) => u.email === email && u.password === password && u.role === role
+    );
+
+    if (user) {
+      console.log("Login successful:", user);
+      alert(`Welcome back, ${user.name}!`);
+      setError("");
+    } else {
+      setError("Invalid email, password, or role");
+    }
   };
 
   return (
@@ -56,6 +67,7 @@ const Login: React.FC = () => {
             <option value="agent">Delivery Agent</option>
           </select>
         </div>
+        {error && <p className="text-red-600">{error}</p>}
         <button
           type="submit"
           className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700"

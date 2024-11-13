@@ -9,7 +9,8 @@ const HomePage: React.FC = () => {
         <div
           className="absolute inset-0 bg-cover bg-center z-0"
           style={{
-            backgroundImage: "url(../assets/pexels-mizunokozuki-13443801.jpg)",
+            backgroundImage:
+              "url(https://jungleworks.me/wp-content/uploads/2020/10/Untitled-design-29-1024x543.png)",
           }}
         ></div>
         <div className="absolute inset-0 bg-black opacity-50 z-10"></div>
@@ -29,7 +30,7 @@ const HomePage: React.FC = () => {
           <div className="flex flex-wrap items-center">
             <div className="w-full md:w-1/2 mb-8 md:mb-0">
               <img
-                src="https://source.unsplash.com/random/600x400?courier,delivery"
+                src="https://www.costanalysts.com/wp-content/uploads/2022/12/package-delivery-companies.jpg"
                 alt="About Us"
                 className="rounded-lg shadow-lg"
               />
@@ -77,7 +78,7 @@ const HomePage: React.FC = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div className="bg-white rounded-lg shadow-lg overflow-hidden">
               <img
-                src="https://source.unsplash.com/random/400x300?package,delivery"
+                src="https://img.redbull.com/images/q_auto,f_auto/redbullcom/2016/05/17/1331795283494_8/max-verstappen-racing-his-red-bull-racing-rb12-to-victory-at-the-2016-spanish-formula-one-gp"
                 alt="Order Delivery"
                 className="w-full h-48 object-cover"
               />
@@ -90,7 +91,7 @@ const HomePage: React.FC = () => {
             </div>
             <div className="bg-white rounded-lg shadow-lg overflow-hidden">
               <img
-                src="https://source.unsplash.com/random/400x300?tracking,map"
+                src="https://vareli.co.in/vareliCMS/public/images/220111582/fdc4f82b-e2db-445b-a6bc-ad356c53798a.jpg"
                 alt="Real-Time Tracking"
                 className="w-full h-48 object-cover"
               />
@@ -104,7 +105,7 @@ const HomePage: React.FC = () => {
             </div>
             <div className="bg-white rounded-lg shadow-lg overflow-hidden">
               <img
-                src="https://source.unsplash.com/random/400x300?customer,support"
+                src="https://storage.googleapis.com/cdn-devwebsite-bolddesk/media/2023/07/483a3ef5-customer-support-team-compressed.jpg"
                 alt="Customer Support"
                 className="w-full h-48 object-cover"
               />
