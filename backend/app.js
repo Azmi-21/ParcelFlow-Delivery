@@ -1,7 +1,9 @@
 import express, { json } from "express";
-const app = express();
+import cors from "cors";
 import PaymentRoutes from "./src/Application/Routes/PaymentRoutes.js";
 
+const app = express();
+app.use(cors());
 app.use(json());
 app.use("/api", PaymentRoutes);
 
