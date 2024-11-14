@@ -1,16 +1,11 @@
-const express = require("express");
+import express, { json } from "express";
 const app = express();
+import PaymentRoutes from "./src/Application/Routes/PaymentRoutes.js";
+
+app.use(json());
+app.use("/api", PaymentRoutes);
+
 const PORT = 3000;
-
-// Middleware to parse JSON requests
-app.use(express.json());
-
-// Sample route for testing
-app.get("/", (req, res) => {
-  res.send("Hello, this is your Express server!");
-});
-
-// Start the server
 app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
+  console.log(`Server running on http://localhost:${PORT}`);
 });
