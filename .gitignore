@@ -1,0 +1,27 @@
+# Ignore frontend node_modules if you have it there (in case of a React app)
+frontend/node_modules/
+# Ignore backend node_modules
+backend/node_modules/
+
+# Environment variables for both frontend and backend
+frontend/.env
+backend/.env
+
+# Logs
+**/logs/
+**/*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# Ignore build files (for React frontend, if applicable)
+frontend/build/
+frontend/.next/ # If you're using Next.js
+
+# Ignore any IDE-specific files
+.vscode/
+.idea/
