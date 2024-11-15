@@ -2,32 +2,45 @@ import React, { useState } from "react";
 
 const Feedback: React.FC = () => {
   const [rating, setRating] = useState(0);
+  const [hoverRating, setHoverRating] = useState(0);
   const [comment, setComment] = useState("");
   const [submitted, setSubmitted] = useState(false);
+
+  const handleMouseEnter = (index: number) => {
+    setHoverRating(index);
+  };
+
+  const handleMouseLeave = () => {
+    setHoverRating(0);
+  };
+
+  const handleClick = (index: number) => {
+    setRating(index);
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     // TODO: Implement feedback submission logic
-    console.log("Feedback submitted:", { rating, comment });
+    alert("Feedback submitted: " +  rating + " stars, " + comment);
     setSubmitted(true);
   };
 
   return (
-    <div className="max-w-md mx-auto">
+    <div className="feedback-form">
       <h1 className="text-2xl font-bold mb-4">Delivery Feedback</h1>
       {!submitted ? (
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label className="block mb-1">Rate your experience</label>
-            <div className="flex space-x-2">
+            <div id="rating" className="flex">
               {[1, 2, 3, 4, 5].map((star) => (
                 <button
                   key={star}
                   type="button"
-                  onClick={() => setRating(star)}
-                  className={`text-2xl ${
-                    star <= rating ? "text-yellow-500" : "text-gray-300"
-                  }`}
+                  onClick={() => handleClick(star)}
+                  onMouseEnter={() => handleMouseEnter(star)}
+                  onMouseLeave={handleMouseLeave}
+                  className={`star ${rating >= star || hoverRating >= star ? "selected" : ""}`}
                 >
                   ★
                 </button>

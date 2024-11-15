@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { userDatabase } from "../assets/userDatabase";
 
 const Register: React.FC = () => {
   const [name, setName] = useState("");
@@ -7,11 +8,20 @@ const Register: React.FC = () => {
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
   const [role, setRole] = useState("customer");
+  const [error, setError] = useState("");
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // TODO: Implement registration logic
-    console.log("Register:", { name, email, phone, password, role });
+    const existingUser = userDatabase.find((u) => u.email === email);
+
+    if (existingUser) {
+      setError("A user with this email already exists");
+    } else {
+      userDatabase.push({ name, email, phone, password, role });
+      console.log("User registered:", { name, email, phone, password, role });
+      alert("Registration successful! You can now log in.");
+      setError("");
+    }
   };
 
   return (
@@ -84,6 +94,7 @@ const Register: React.FC = () => {
             <option value="agent">Delivery Agent</option>
           </select>
         </div>
+        {error && <p className="text-red-600">{error}</p>}
         <button
           type="submit"
           className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700"
