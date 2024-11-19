@@ -57,6 +57,7 @@ const Feedback: React.FC = () => {
               onChange={(e) => setComment(e.target.value)}
               className="w-full px-3 py-2 border rounded"
               rows={4}
+              placeholder="Enter any additional comments you may have (optional)"
             ></textarea>
           </div>
           <button
