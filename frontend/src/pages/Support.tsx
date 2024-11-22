@@ -1,14 +1,13 @@
 import React, { useState } from "react";
-
-// **TODO: Implement chatbot logic to generate responses
+import { Button } from "@/components/ui/button";
 
 const Support: React.FC = () => {
+
   return (
-    <div>
-      <p>CHATCHATCHATCHATCHATCHATCHATCHATCHATCHATCHATCHAT</p>
-      <p>BOT</p>
+    <div className="max-w-md mx-auto p-4 bg-white rounded shadow">
+      <iframe style={{ width: "400px", height: "600px" }} src="https://app.fastbots.ai/embed/cm3t122kb0hdms5bmjud4ok48"></iframe>
     </div>
   );
 };
 
-export default Support;
+ export default Support;
