@@ -1,6 +1,6 @@
 class CashOnDelivery {
   pay(amount) {
-    return `Processed ${amount} using Cash on Delivery.`;
+    return `Please be ready with $${amount} when your delivery arrives.`;
   }
 }
 

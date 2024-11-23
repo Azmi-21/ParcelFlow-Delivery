@@ -7,7 +7,6 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import DeliveryRequest from "./pages/DeliveryRequest";
 import Tracking from "./pages/Tracking";
-import Payment from "./pages/Payment";
 import Support from "./pages/Support";
 import Feedback from "./pages/Feedback";
 import HomePage from "./pages/HomePage";
@@ -23,7 +22,6 @@ const App: React.FC = () => {
           <Route path="register" element={<Register />} />
           <Route path="request-delivery" element={<DeliveryRequest />} />
           <Route path="tracking" element={<Tracking />} />
-          <Route path="payment" element={<Payment />} />
           <Route path="support" element={<Support />} />
           <Route path="feedback" element={<Feedback />} />
         </Route>

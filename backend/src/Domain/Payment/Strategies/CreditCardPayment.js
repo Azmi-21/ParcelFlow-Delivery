@@ -1,6 +1,6 @@
 class CreditCardPayment {
   pay(amount) {
-    return `Processed ${amount} using Credit Card.`;
+    return `Processed $${amount} using Credit Card.`;
   }
 }
 

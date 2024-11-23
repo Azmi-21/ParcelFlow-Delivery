@@ -1,6 +1,6 @@
 class PayPalPayment {
   pay(amount) {
-    return `Processed ${amount} using PayPal.`;
+    return `Processed $${amount} using PayPal.`;
   }
 }
 

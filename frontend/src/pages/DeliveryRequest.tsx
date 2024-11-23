@@ -1,5 +1,15 @@
-import React, { useState } from "react";
-import { Package, MapPin, Clock, DollarSign, Box, Weight, Ruler } from "lucide-react";
+import React, { useEffect, useState } from "react";
+import {
+  Package,
+  MapPin,
+  Clock,
+  DollarSign,
+  Box,
+  Weight,
+  Ruler,
+} from "lucide-react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 interface PackageDimensions {
   height: number;
@@ -15,13 +25,20 @@ interface CustomerInfo {
 }
 
 const PACKAGE_TYPES = [
-  { id: 'document', name: 'Document', basePrice: 10 },
-  { id: 'small', name: 'Small Package', basePrice: 15 },
-  { id: 'medium', name: 'Medium Package', basePrice: 25 },
-  { id: 'large', name: 'Large Package', basePrice: 35 },
+  { id: "document", name: "Document", basePrice: 10 },
+  { id: "small", name: "Small Package", basePrice: 15 },
+  { id: "medium", name: "Medium Package", basePrice: 25 },
+  { id: "large", name: "Large Package", basePrice: 35 },
+];
+
+const PAYMENT_METHODS = [
+  { id: "cashOnDelivery", name: "Cash On Delivery" },
+  { id: "paypal", name: "PayPal" },
+  { id: "creditCard", name: "Credit Card" },
 ];
 
 const DeliveryRequest: React.FC = () => {
+  const navigate = useNavigate();
   const [customerInfo, setCustomerInfo] = useState<CustomerInfo>({
     name: "",
     email: "",
@@ -37,17 +54,23 @@ const DeliveryRequest: React.FC = () => {
     height: 0,
     width: 0,
     depth: 0,
-    weight: 0
+    weight: 0,
   });
-  const [selectedPackageType, setSelectedPackageType] = useState('');
-  const [calculatedCost, setCalculatedCost] = useState<number | null>(null);
+  const [selectedPackageType, setSelectedPackageType] = useState("");
+  const [calculatedCost, setCalculatedCost] = useState(0);
+  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState("");
+  const [accountNumber, setAccountNumber] = useState("");
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    calculatePackageCost();
     calculateQuotation();
   };
 
   const calculateQuotation = () => {
+    // To prevent random generation
+    if (estimatedFee != 0) return;
+
     // TODO: Implement real calculation logic
     const basePrice = 10;
     const randomFee = Math.floor(Math.random() * 40);
@@ -55,8 +78,27 @@ const DeliveryRequest: React.FC = () => {
     setShowQuotation(true);
   };
 
-  const handleConfirm = () => {
-    // TODO: Implement order confirmation logic
+  const handleConfirm = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    // Send payment request to the backend
+    try {
+      const response = await axios.post("http://localhost:3000/api/payment", {
+        amount: estimatedFee + calculatedCost,
+        method: selectedPaymentMethod,
+      });
+
+      alert(`Payment Successful: ${response.data.message}`);
+      navigate("/dashboard");
+    } catch (error: any) {
+      alert(
+        `Payment Failed: ${error.response?.data?.error || error.message}\n` +
+          "Please check the payment details again."
+      );
+      return;
+    }
+
+    // TODO: Implement order and payment confirmation logic
     console.log("Delivery request confirmed", {
       customerInfo,
       pickupAddress,
@@ -67,22 +109,48 @@ const DeliveryRequest: React.FC = () => {
     });
   };
 
+  // Dynamically calculate cost when dimensions or package type change
+  useEffect(() => {
+    if (
+      dimensions.height &&
+      dimensions.width &&
+      dimensions.depth &&
+      dimensions.weight &&
+      selectedPackageType
+    ) {
+      calculatePackageCost();
+    } else {
+      // Reset everything if inputs are incomplete
+      setSelectedPaymentMethod("");
+      setAccountNumber("");
+      setEstimatedFee(0);
+      setShowQuotation(false);
+      setCalculatedCost(0);
+    }
+  }, [dimensions, selectedPackageType]);
+
   const calculatePackageCost = () => {
-    if (!dimensions.height || !dimensions.width || !dimensions.depth || !dimensions.weight) {
+    if (
+      !dimensions.height ||
+      !dimensions.width ||
+      !dimensions.depth ||
+      !dimensions.weight
+    ) {
       return;
     }
 
     const volume = dimensions.height * dimensions.width * dimensions.depth;
-    const selectedPackage = PACKAGE_TYPES.find(p => p.id === selectedPackageType);
+    const selectedPackage = PACKAGE_TYPES.find(
+      (p) => p.id === selectedPackageType
+    );
     const basePrice = selectedPackage?.basePrice || 15;
-    
+
     // Basic calculation formula (can be adjusted based on your needs)
     const volumePrice = volume * 0.01;
     const weightPrice = dimensions.weight * 0.5;
     const totalCost = basePrice + volumePrice + weightPrice;
-    
+
     setCalculatedCost(Math.round(totalCost * 100) / 100);
-    setEstimatedFee(totalCost);
   };
 
   const renderCalculator = () => (
@@ -97,10 +165,16 @@ const DeliveryRequest: React.FC = () => {
           </label>
           <input
             type="number"
-            value={dimensions.height || ''}
-            onChange={(e) => setDimensions({...dimensions, height: parseFloat(e.target.value)})}
+            value={dimensions.height || ""}
+            onChange={(e) =>
+              setDimensions({
+                ...dimensions,
+                height: parseFloat(e.target.value),
+              })
+            }
             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
             placeholder="Enter height"
+            required
           />
         </div>
         <div>
@@ -109,10 +183,16 @@ const DeliveryRequest: React.FC = () => {
           </label>
           <input
             type="number"
-            value={dimensions.width || ''}
-            onChange={(e) => setDimensions({...dimensions, width: parseFloat(e.target.value)})}
+            value={dimensions.width || ""}
+            onChange={(e) =>
+              setDimensions({
+                ...dimensions,
+                width: parseFloat(e.target.value),
+              })
+            }
             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
             placeholder="Enter width"
+            required
           />
         </div>
         <div>
@@ -121,10 +201,16 @@ const DeliveryRequest: React.FC = () => {
           </label>
           <input
             type="number"
-            value={dimensions.depth || ''}
-            onChange={(e) => setDimensions({...dimensions, depth: parseFloat(e.target.value)})}
+            value={dimensions.depth || ""}
+            onChange={(e) =>
+              setDimensions({
+                ...dimensions,
+                depth: parseFloat(e.target.value),
+              })
+            }
             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
             placeholder="Enter depth"
+            required
           />
         </div>
         <div>
@@ -133,10 +219,16 @@ const DeliveryRequest: React.FC = () => {
           </label>
           <input
             type="number"
-            value={dimensions.weight || ''}
-            onChange={(e) => setDimensions({...dimensions, weight: parseFloat(e.target.value)})}
+            value={dimensions.weight || ""}
+            onChange={(e) =>
+              setDimensions({
+                ...dimensions,
+                weight: parseFloat(e.target.value),
+              })
+            }
             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
             placeholder="Enter weight"
+            required
           />
         </div>
       </div>
@@ -146,19 +238,16 @@ const DeliveryRequest: React.FC = () => {
           value={selectedPackageType}
           onChange={(e) => setSelectedPackageType(e.target.value)}
           className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+          required
         >
           <option value="">Select package type</option>
-          {PACKAGE_TYPES.map(type => (
-            <option key={type.id} value={type.id}>{type.name}</option>
+          {PACKAGE_TYPES.map((type) => (
+            <option key={type.id} value={type.id}>
+              {type.name}
+            </option>
           ))}
         </select>
       </div>
-      <button
-        onClick={calculatePackageCost}
-        className="w-full bg-orange-400 text-white py-3 rounded-lg hover:bg-orange-500 transition-colors"
-      >
-        Calculate Cost
-      </button>
       {calculatedCost !== null && (
         <div className="mt-4 text-center">
           <p className="text-lg font-semibold">Total Cost: ${calculatedCost}</p>
@@ -167,10 +256,46 @@ const DeliveryRequest: React.FC = () => {
     </div>
   );
 
+  const renderPayment = () => (
+    <div className="bg-gray-50 rounded-lg p-6 mb-6">
+      <div className="mb-4">
+        <label className="block text-gray-700 mb-2">Payment Method</label>
+        <select
+          value={selectedPaymentMethod}
+          onChange={(e) => setSelectedPaymentMethod(e.target.value)}
+          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+          required
+        >
+          <option value="">Select Payment Method</option>
+          {PAYMENT_METHODS.map((type) => (
+            <option key={type.id} value={type.id}>
+              {type.name}
+            </option>
+          ))}
+        </select>
+      </div>
+      {selectedPaymentMethod && selectedPaymentMethod !== "cashOnDelivery" && (
+        <div>
+          <label className="block text-gray-700 mb-2 flex items-center">
+            Account Number
+          </label>
+          <input
+            type="string"
+            value={accountNumber || ""}
+            onChange={(e) => setAccountNumber(e.target.value)}
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+            placeholder="Enter Account Number"
+            required
+          />
+        </div>
+      )}
+    </div>
+  );
+
   return (
     <div className="max-w-4xl mx-auto px-4 py-8">
       <h1 className="text-3xl font-bold mb-8">Request Delivery</h1>
-      
+
       <div className="bg-white rounded-lg shadow-lg p-6 mb-8">
         <h2 className="text-xl font-semibold mb-4 flex items-center">
           <Package className="mr-2" /> Customer Information
@@ -181,7 +306,9 @@ const DeliveryRequest: React.FC = () => {
             <input
               type="text"
               value={customerInfo.name}
-              onChange={(e) => setCustomerInfo({ ...customerInfo, name: e.target.value })}
+              onChange={(e) =>
+                setCustomerInfo({ ...customerInfo, name: e.target.value })
+              }
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               placeholder="Enter your full name"
               required
@@ -192,7 +319,9 @@ const DeliveryRequest: React.FC = () => {
             <input
               type="email"
               value={customerInfo.email}
-              onChange={(e) => setCustomerInfo({ ...customerInfo, email: e.target.value })}
+              onChange={(e) =>
+                setCustomerInfo({ ...customerInfo, email: e.target.value })
+              }
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               placeholder="Enter your email"
               required
@@ -203,7 +332,9 @@ const DeliveryRequest: React.FC = () => {
             <input
               type="tel"
               value={customerInfo.phone}
-              onChange={(e) => setCustomerInfo({ ...customerInfo, phone: e.target.value })}
+              onChange={(e) =>
+                setCustomerInfo({ ...customerInfo, phone: e.target.value })
+              }
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               placeholder="Enter your phone number"
               required
@@ -230,7 +361,9 @@ const DeliveryRequest: React.FC = () => {
               />
             </div>
             <div>
-              <label className="block text-gray-700 mb-2">Dropoff Address</label>
+              <label className="block text-gray-700 mb-2">
+                Dropoff Address
+              </label>
               <input
                 type="text"
                 value={dropoffAddress}
@@ -279,17 +412,27 @@ const DeliveryRequest: React.FC = () => {
 
         {showQuotation && (
           <div className="mt-8 border-t pt-6">
-            <h3 className="text-xl font-semibold mb-4 flex items-center">
-              <DollarSign className="mr-2" /> Delivery Quotation
-            </h3>
             <div className="bg-blue-50 p-4 rounded-lg">
-              <p className="text-lg">Estimated Fee: <span className="font-bold">${estimatedFee}</span></p>
-              <button
-                onClick={handleConfirm}
-                className="mt-4 w-full bg-green-500 text-white py-3 rounded-lg hover:bg-green-600 transition-colors"
-              >
-                Confirm Request
-              </button>
+              <p className="text-lg">
+                Quotation Fee:{" "}
+                <span className="font-bold">${estimatedFee}</span>
+              </p>
+              <p className="text-lg">
+                Total Payment:{" "}
+                <span className="font-bold">
+                  ${estimatedFee + calculatedCost}
+                </span>
+              </p>
+
+              <form onSubmit={handleConfirm}>
+                {renderPayment()}
+                <button
+                  type="submit"
+                  className="mt-4 w-full bg-green-500 text-white py-3 rounded-lg hover:bg-green-600 transition-colors"
+                >
+                  Confirm Request & Pay
+                </button>
+              </form>
             </div>
           </div>
         )}
