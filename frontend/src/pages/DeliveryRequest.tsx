@@ -33,7 +33,7 @@ const PACKAGE_TYPES = [
 
 const PAYMENT_METHODS = [
   { id: "cashOnDelivery", name: "Cash On Delivery" },
-  { id: "paypal", name: "PayPal" },
+  { id: "debitCard", name: "Debit Card" },
   { id: "creditCard", name: "Credit Card" },
 ];
 
@@ -60,6 +60,8 @@ const DeliveryRequest: React.FC = () => {
   const [calculatedCost, setCalculatedCost] = useState(0);
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState("");
   const [accountNumber, setAccountNumber] = useState("");
+  const [accountCvv, setAccountCvv] = useState("");
+  const [accountExpiry, setAccountExpiry] = useState("");
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -89,7 +91,6 @@ const DeliveryRequest: React.FC = () => {
       });
 
       alert(`Payment Successful: ${response.data.message}`);
-      navigate("/dashboard");
     } catch (error: any) {
       alert(
         `Payment Failed: ${error.response?.data?.error || error.message}\n` +
@@ -107,6 +108,8 @@ const DeliveryRequest: React.FC = () => {
       preferredTime,
       estimatedFee,
     });
+    // When saving the order details, navigate to dashboard where order status is shown
+    navigate("/dashboard");
   };
 
   // Dynamically calculate cost when dimensions or package type change
@@ -287,6 +290,36 @@ const DeliveryRequest: React.FC = () => {
             placeholder="Enter Account Number"
             required
           />
+          <div className="flex gap-4 mt-4">
+            <div className="flex-1">
+              <label className="block text-gray-700 mb-2 flex items-center">
+                CVV
+              </label>
+              <input
+                type="text"
+                value={accountCvv || ""}
+                onChange={(e) => setAccountCvv(e.target.value)}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                placeholder="Enter CVV"
+                maxLength={3}
+                required
+              />
+            </div>
+            <div className="flex-1">
+              <label className="block text-gray-700 mb-2 flex items-center">
+                Expiry
+              </label>
+              <input
+                type="text"
+                value={accountExpiry || ""}
+                onChange={(e) => setAccountExpiry(e.target.value)}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                placeholder="MM/YY"
+                maxLength={5}
+                required
+              />
+            </div>
+          </div>
         </div>
       )}
     </div>
