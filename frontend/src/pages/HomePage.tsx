@@ -1,5 +1,5 @@
 import React from "react";
-import { Truck, Clock, Shield, Phone } from "lucide-react";
+import { Truck, Clock, Shield } from "lucide-react";
 
 //** TODO: Add needed pictures**
 const HomePage: React.FC = () => {
@@ -25,7 +25,7 @@ const HomePage: React.FC = () => {
       </section>
 
       {/* About Us Section */}
-      <section className="py-16 bg-white">
+      <section id="about" className="py-16 bg-white">
         <div className="container mx-auto px-4">
           <div className="flex flex-wrap items-center">
             <div className="w-full md:w-1/2 mb-8 md:mb-0">
@@ -125,7 +125,7 @@ const HomePage: React.FC = () => {
       <section className="py-16 bg-white">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl font-bold text-center mb-12">
-            Why Choose Us
+            Why Choose Us ?
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div className="flex items-center">
