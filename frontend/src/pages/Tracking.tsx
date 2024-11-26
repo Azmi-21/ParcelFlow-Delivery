@@ -92,6 +92,8 @@ const Tracking: React.FC = () => {
 
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
 
+  const [filteredOrders, setFilteredOrders] = useState<Order[]>([]);
+
   const handleOrderClick = (order: Order) => {
     setSelectedOrder(order);
     setError("");
@@ -99,15 +101,54 @@ const Tracking: React.FC = () => {
 
   const handleTrackingSearch = (e: React.FormEvent) => {
     e.preventDefault();
-    const order = orders.find((o) => o.trackingNumber === trackingNumber);
-    if (order) {
-      setSelectedOrder(order);
+    if (!trackingNumber.trim()) {
+      setFilteredOrders(orders);
+      setError("");
+      return;
+    }
+
+    const matchingOrders = orders.filter((order) => 
+      order.trackingNumber.toLowerCase().includes(trackingNumber.toLowerCase())
+    );
+
+    if (matchingOrders.length > 0) {
+      setFilteredOrders(matchingOrders);
+      setSelectedOrder(matchingOrders[0]); // Select the first matching order
       setError("");
     } else {
-      setError("No order found with this tracking number");
+      setFilteredOrders([]);
       setSelectedOrder(null);
+      setError("No orders found with this tracking number");
     }
   };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setTrackingNumber(value);
+    
+    // Real-time filtering as user types
+    if (!value.trim()) {
+      setFilteredOrders(orders);
+      setError("");
+      return;
+    }
+
+    const matchingOrders = orders.filter((order) =>
+      order.trackingNumber.toLowerCase().includes(value.toLowerCase())
+    );
+
+    if (matchingOrders.length > 0) {
+      setFilteredOrders(matchingOrders);
+      setError("");
+    } else {
+      setFilteredOrders([]);
+      setError("No orders found with this tracking number");
+    }
+  };
+
+  React.useEffect(() => {
+    setFilteredOrders(orders);
+  }, [orders]);
 
   return (
     <div className="max-w-6xl mx-auto">
@@ -118,7 +159,7 @@ const Tracking: React.FC = () => {
             type="text"
             placeholder="Enter Tracking Number"
             value={trackingNumber}
-            onChange={(e) => setTrackingNumber(e.target.value)}
+            onChange={handleInputChange}
             className="flex-1 px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
           <button
@@ -134,11 +175,11 @@ const Tracking: React.FC = () => {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        {/* Orders List */}
+        {/* Orders List - Update to use filteredOrders */}
         <div>
           <h2 className="text-xl font-semibold mb-4">Recent Orders</h2>
           <div className="space-y-4">
-            {orders.map((order) => (
+            {filteredOrders.map((order) => (
               <div
                 key={order.id}
                 className={`p-4 rounded-lg cursor-pointer transition-colors ${
