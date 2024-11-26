@@ -82,7 +82,36 @@ const DeliveryRequest: React.FC = () => {
 
   const handleConfirm = async (e: React.FormEvent) => {
     e.preventDefault();
+    // Construct the new parcel object
+  const newParcel = {
+    id: Date.now(), // Unique ID for the parcel
+    trackingNumber: `${Math.floor(100000000000 + Math.random() * 900000000000)}`,
+    pickupAddress,
+    dropoffAddress,
+    senderName: customerInfo.name,
+    senderPhone: customerInfo.phone,
+    recipientName: "Recipient Name", // Optional input or add recipient input fields
+    recipientPhone: "Recipient Phone", // Optional input
+    note: packageDetails,
+    status: "Pending", // Initial status
+    estimatedDelivery: preferredTime,
+    deliveryStaff: null, // No staff assigned initially
+    timeline: [
+      { status: "Item accepted by Courier", timestamp: "", completed: false },
+      { status: "Collected", timestamp: "", completed: false },
+      { status: "In-Transit", timestamp: "", completed: false },
+      { status: "Out for Delivery", timestamp: "", completed: false },
+      { status: "Delivered", timestamp: "", completed: false },
+    ],
+  };
+  // Fetch existing parcels from localStorage
+  const existingParcels = JSON.parse(localStorage.getItem("parcels") || "[]");
 
+  // Add the new parcel to the list
+  const updatedParcels = [...existingParcels, newParcel];
+
+  // Save the updated list back to localStorage
+  localStorage.setItem("parcels", JSON.stringify(updatedParcels));
     // Send payment request to the backend
     try {
       const response = await axios.post("http://localhost:3000/api/payment", {

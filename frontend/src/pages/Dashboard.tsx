@@ -112,7 +112,7 @@ const Dashboard: React.FC = () => {
     localStorage.setItem('parcels', JSON.stringify(DEFAULT_PARCELS));
     return DEFAULT_PARCELS;
   });
-
+  
   // Add this useEffect to reset data on component mount
   React.useEffect(() => {
     const currentParcels = localStorage.getItem('parcels');
