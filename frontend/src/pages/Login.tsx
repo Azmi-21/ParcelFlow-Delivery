@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { userDatabase } from "../assets/userDatabase";
 
 const Login: React.FC = () => {
@@ -7,6 +7,7 @@ const Login: React.FC = () => {
   const [password, setPassword] = useState("");
   const [role, setRole] = useState("customer");
   const [error, setError] = useState("");
+  const navigate = useNavigate(); 
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -18,6 +19,11 @@ const Login: React.FC = () => {
       console.log("Login successful:", user);
       alert(`Welcome back, ${user.name}!`);
       setError("");
+      if (role === "customer") {
+        navigate("/customer-dashboard");  // Redirect to Customer Dashboard
+      } else if (role === "agent") {
+        navigate("/agent-dashboard");  // Redirect to Delivery Agent Dashboard
+      }
     } else {
       setError("Invalid email, password, or role");
     }
