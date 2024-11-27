@@ -25,12 +25,6 @@ const Navbar: React.FC = () => {
             Tracking
           </Link>
           <Link
-            to="/payment"
-            className="text-lg font-medium hover:text-gray-200 transition-colors"
-          >
-            Payment
-          </Link>
-          <Link
             to="/support"
             className="text-lg font-medium hover:text-gray-200 transition-colors"
           >
